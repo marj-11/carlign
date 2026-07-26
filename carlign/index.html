@@ -38,6 +38,12 @@ body{
   border:1px solid var(--border); border-radius:20px;
   padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.06);
 }
+@media (min-width:768px){
+  body{ padding:32px 24px; }
+  .panel{ max-width:min(92vw, 74vh, 820px); padding:28px; }
+  h1{ font-size:34px; }
+  header p{ font-size:16px; }
+}
 header{ text-align:center; margin-bottom:12px; }
 h1{ font-size:26px; font-weight:600; letter-spacing:-0.3px; }
 h1 span{ color:var(--accent); }
