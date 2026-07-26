@@ -433,7 +433,7 @@ const S = {
   lives: CFG.LIVES, golds: 0, goodHits: 0,
   cars: [], bars: [], parts: [],
   spawnGap: CFG.SPAWN_GAP_START,
-  shake: 0, flash: 0, glow: 0, sub: 0,
+  flash: 0, glow: 0, sub: 0,
   scenery: { trees: [], blds: [] }
 };
 function seedScenery(){
@@ -449,7 +449,7 @@ function resetRun(){
   S.lives = CFG.LIVES; S.golds = 0; S.goodHits = 0;
   S.cars = []; S.bars = []; S.parts = [];
   S.spawnGap = CFG.SPAWN_GAP_START;
-  S.shake = 0; S.flash = 0; S.glow = 0;
+  S.flash = 0; S.glow = 0;
   UI.floaters.innerHTML = '';
   UI.lifeUp.classList.remove('show');
   hideResult();
@@ -656,11 +656,10 @@ function awardLife(){
   clearTimeout(lifeUpTimer);
   lifeUpTimer = setTimeout(() => UI.lifeUp.classList.remove('show'), 640);
   burst(CFG.PLAYER_X + CFG.PLAYER_W / 2, CFG.PLAYER_Y, 34, { color: DARK ? '#ED93B1' : '#D4537E', power: 8, size: 6, life: 66, lift: 2 });
-  S.shake = Math.max(S.shake, 6);
   if(Audio_.on) [988, 1319].forEach((f, i) => setTimeout(() => Audio_.beep(f, 0.14, 'sine', 0.13), i * 55));
 }
 function loseLife(){
-  S.lives--; S.shake = 8;
+  S.lives--;
   syncHud();
   if(S.lives <= 0) endRun();
 }
@@ -688,7 +687,7 @@ function tap(){
   if(pct >= 95){
     const pay = PAYOUT(pct);
     showResult(pct, (pct >= 100 ? 'FLAWLESS  +' : 'PERFECT  +') + pay, 'good', true);
-    S.flash = 8; S.shake = 4 + Math.min(pay, 6); S.glow = Math.max(S.glow, 0.45 + pay * 0.05);
+    S.flash = 8; S.glow = Math.max(S.glow, 0.45 + pay * 0.05);
     burst(cx, cy, 30 + pay * 6, { power: 8, size: 6, life: 62 });
     fireworks(220, 250, 1 + Math.min(pay, 5));
     Audio_.fanfare();
@@ -778,7 +777,6 @@ function step(){
 function render(){
   const playing = S.mode === 'play';
   ctx.save();
-  if(S.shake > 0){ ctx.translate((Math.random() - 0.5) * S.shake, (Math.random() - 0.5) * S.shake); S.shake *= 0.82; if(S.shake < 0.5) S.shake = 0; }
   drawScene(playing);
   for(const b of S.bars) if(!b.taken) drawIngot(CFG.GOLD_LANE_X, barY(b), CFG.GOLD_SCALE);
   for(const c of S.cars){
