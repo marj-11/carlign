@@ -677,7 +677,7 @@ function tap(){
     burst(cx, cy, 30 + pay * 6, { power: 8, size: 6, life: 62 });
     fireworks(220, 250, 1 + Math.min(pay, 5));
     Audio_.fanfare();
-    S.golds += pay; dropGold(pay);
+    dropGold(pay);
     if(pct >= 97) awardLife();
   } else if(pct >= 90){
     S.goodHits++;
@@ -685,7 +685,7 @@ function tap(){
     burst(cx, cy, 22, { color: P.good, power: 6, size: 5, life: 48 });
     if(S.goodHits >= CFG.GOOD_HITS_PER_GOLD){
       S.goodHits = 0;
-      S.golds += 1; dropGold(1);
+      dropGold(1);
       showResult(pct, 'GREAT  +1', 'good', false);
       S.glow = Math.max(S.glow, 0.3);
       Audio_.beep(880, 0.16, 'triangle', 0.14);
@@ -750,6 +750,7 @@ function step(){
     b.y += SPEED * CFG.GOLD_SPEED_MULT;
     if(!b.taken && (b.y + 22) > PLAYER_Y - CAR_H / 2 && b.y < PLAYER_Y + CAR_H / 2){
       b.taken = true;
+      S.golds++;
       burst(133, b.y + 11, 20, { color: P.gold, power: 5, size: 5, life: 46 });
       floatText('+1', PLAYER_Y - 30);
       Audio_.beep(880, 0.14, 'triangle', 0.13);
