@@ -220,7 +220,6 @@ footer{ margin-top:16px; font-size:12px; color:var(--muted); }
         <button id="boardBtnStart">Scoreboard</button>
       </div>
       <p class="whoami" id="whoami"></p>
-      <p class="whoami"><button type="button" id="switchBtn" style="font-size:12px;padding:4px 10px">Not you? Switch player</button></p>
     </div>
 
     <!-- game over -->
@@ -355,7 +354,7 @@ const UI = {
   hud: $('hud'), lives: $('lives'), goldCount: $('goldCount'),
   result: $('result'), resultPct: $('resultPct'), resultLabel: $('resultLabel'),
   floaters: $('floaters'), lifeUp: $('lifeUp'),
-  auth: $('authOverlay'), authName: $('authName'), authErr: $('authErr'), switchBtn: $('switchBtn'),
+  auth: $('authOverlay'), authName: $('authName'), authErr: $('authErr'),
   start: $('startOverlay'), over: $('overOverlay'), board: $('boardOverlay'),
   overName: $('overName'), overGold: $('overGold'), overLabel: $('overLabel'), overBest: $('overBest'),
   saveErr: $('saveErr'), boardList: $('boardList'), whoami: $('whoami'),
@@ -408,10 +407,6 @@ const Session = {
   remember(name){
     this.name = name;
     try{ localStorage.setItem(NAME_KEY, name); }catch(e){}
-  },
-  forget(){
-    this.name = null;
-    try{ localStorage.removeItem(NAME_KEY); }catch(e){}
   }
 };
 
@@ -846,12 +841,6 @@ async function doAuth(){
 }
 $('authBtn').addEventListener('click', doAuth);
 UI.authName.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); doAuth(); } });
-UI.switchBtn.addEventListener('click', () => {
-  Session.forget();
-  UI.authName.value = '';
-  UI.authErr.textContent = '';
-  setMode('auth');
-});
 
 $('startBtn').addEventListener('click', startRun);
 $('againBtn').addEventListener('click', startRun);
