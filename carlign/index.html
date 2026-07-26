@@ -815,20 +815,23 @@ requestAnimationFrame(loop);
    INPUT
    ============================================================ */
 let lastTapAt = 0;
-function handleTap(e){
-  if(e) e.preventDefault();
+function attemptTap(){
   const now = performance.now();
   if(now - lastTapAt < 40) return;
   lastTapAt = now;
-  if(S.mode === 'play') tap();
+  tap();
+}
+function handleTap(e){
+  e.preventDefault();
+  if(S.mode === 'play') attemptTap();
 }
 cv.addEventListener('pointerdown', handleTap, { passive: false });
-cv.addEventListener('touchstart', handleTap, { passive: false });
 document.addEventListener('keydown', e => {
   if(e.code !== 'Space') return;
   if(document.activeElement === UI.authName) return;
   e.preventDefault();
-  if(S.mode === 'play') tap();
+  if(e.repeat) return;
+  if(S.mode === 'play') attemptTap();
   else if(S.mode === 'over') startRun();
   else if(S.mode === 'board') setMode('over');
 });
